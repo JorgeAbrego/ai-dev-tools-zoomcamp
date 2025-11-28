@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} TODO - TODO App{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <h2 class="form-title">{{ action }} TODO</h2>
+
+        <form method="post" class="todo-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}" class="form-label">
+                    Title <span class="required">*</span>
+                </label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                <div class="form-error">{{ form.title.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}" class="form-label">
+                    Description
+                </label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                <div class="form-error">{{ form.description.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="{{ form.due_date.id_for_label }}" class="form-label">
+                        Due Date
+                    </label>
+                    {{ form.due_date }}
+                    {% if form.due_date.errors %}
+                    <div class="form-error">{{ form.due_date.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        {{ form.is_resolved }}
+                        <span>Mark as completed</span>
+                    </label>
+                    {% if form.is_resolved.errors %}
+                    <div class="form-error">{{ form.is_resolved.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'todo_list' %}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">{{ action }} TODO</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

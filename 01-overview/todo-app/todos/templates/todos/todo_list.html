@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}TODOs - TODO App{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2 class="page-title">My TODOs</h2>
+    <div class="filter-buttons">
+        <a href="?filter=all" class="filter-btn {% if filter == 'all' %}active{% endif %}">All</a>
+        <a href="?filter=unresolved" class="filter-btn {% if filter == 'unresolved' %}active{% endif %}">Active</a>
+        <a href="?filter=resolved" class="filter-btn {% if filter == 'resolved' %}active{% endif %}">Completed</a>
+    </div>
+</div>
+
+{% if todos %}
+<div class="todo-grid">
+    {% for todo in todos %}
+    <div class="todo-card {% if todo.is_resolved %}resolved{% endif %} {% if todo.is_overdue %}overdue{% endif %}">
+        <div class="todo-header">
+            <h3 class="todo-title">{{ todo.title }}</h3>
+            <div class="todo-badges">
+                {% if todo.is_resolved %}
+                <span class="badge badge-success">✓ Completed</span>
+                {% elif todo.is_overdue %}
+                <span class="badge badge-danger">⚠ Overdue</span>
+                {% else %}
+                <span class="badge badge-info">Active</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if todo.description %}
+        <p class="todo-description">{{ todo.description }}</p>
+        {% endif %}
+
+        <div class="todo-meta">
+            {% if todo.due_date %}
+            <div class="meta-item">
+                <span class="meta-icon">📅</span>
+                <span class="meta-text">Due: {{ todo.due_date|date:"M d, Y" }}</span>
+            </div>
+            {% endif %}
+            <div class="meta-item">
+                <span class="meta-icon">🕒</span>
+                <span class="meta-text">Created: {{ todo.created_at|date:"M d, Y" }}</span>
+            </div>
+        </div>
+
+        <div class="todo-actions">
+            <a href="{% url 'todo_toggle' todo.pk %}" class="btn btn-sm btn-toggle">
+                {% if todo.is_resolved %}
+                ↩ Reopen
+                {% else %}
+                ✓ Complete
+                {% endif %}
+            </a>
+            <a href="{% url 'todo_update' todo.pk %}" class="btn btn-sm btn-secondary">✏ Edit</a>
+            <a href="{% url 'todo_delete' todo.pk %}" class="btn btn-sm btn-danger">🗑 Delete</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">📝</div>
+    <h3>No TODOs yet</h3>
+    <p>Start by creating your first TODO item!</p>
+    <a href="{% url 'todo_create' %}" class="btn btn-primary btn-lg">+ Create TODO</a>
+</div>
+{% endif %}
+{% endblock %}

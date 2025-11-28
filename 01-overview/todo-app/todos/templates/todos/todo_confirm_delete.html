@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete TODO - TODO App{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card delete-card">
+        <div class="delete-icon">⚠️</div>
+        <h2 class="form-title">Delete TODO</h2>
+        <p class="delete-warning">Are you sure you want to delete this TODO? This action cannot be undone.</p>
+
+        <div class="todo-preview">
+            <h3>{{ object.title }}</h3>
+            {% if object.description %}
+            <p>{{ object.description }}</p>
+            {% endif %}
+            {% if object.due_date %}
+            <p class="preview-meta">📅 Due: {{ object.due_date|date:"M d, Y" }}</p>
+            {% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <a href="{% url 'todo_list' %}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">Delete TODO</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

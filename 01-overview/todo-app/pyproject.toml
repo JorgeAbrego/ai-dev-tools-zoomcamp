@@ -1,0 +1,9 @@
+[project]
+name = "todo-app"
+version = "0.1.0"
+description = "Django TODO application with CRUD operations, due dates, and resolution tracking"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1,<6.0",
+]
